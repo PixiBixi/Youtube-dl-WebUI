@@ -182,7 +182,11 @@ class Downloader
     private function is_youtubedl_installed()
     {
         exec("which youtube-dl", $out, $r);
-        return $r;
+        if(empty($out)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     /**
