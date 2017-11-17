@@ -1,6 +1,5 @@
 <?php
-require_once 'class/Session.php';
-require_once 'class/Downloader.php';
+include 'vendor/autoload.php';
 
 $session    = Session::getInstance();
 $loginError = "";

@@ -95,7 +95,7 @@ class FileHandler
     private function outuput_folder_exists()
     {
         if (!is_dir($this->get_downloads_folder())) {
-            if (!mkdir($this->get_downloads_folder(), 0777)) {
+            if (!mkdir($this->get_downloads_folder(), 0775)) {
                 return false;
             }
         }

@@ -1,8 +1,6 @@
 <?php
-require_once 'class/Session.php';
+require_once 'vendor/autoload.php';
 require_once 'config/config.php';
-require_once 'class/Downloader.php';
-require_once 'class/FileHandler.php';
 
 $session = Session::getInstance();
 $file = new FileHandler;
@@ -14,10 +12,12 @@ if (!$session->is_logged_in()) {
 if (isset($_GET['type']) && !empty($_GET['type'])) {
     $t = $_GET['type'];
     if ($t === 'v') {
-        $type = "videos";
+        $type = "video ";
+        $mime = "video/mp4";
         $files = $file->listVideos();
     } elseif ($t === 'm') {
-        $type = "musics";
+        $type = "audio ";
+        $mime = "audio/mpeg";
         $files = $file->listMusics();
     }
 }
@@ -30,7 +30,7 @@ if ($session->is_logged_in() && isset($_GET["delete"])) {
 require_once 'views/header.php';
 ?>
 		<div class="container">
-		<?php if (!empty($files)) { ?>
+		<?php if (!empty($files)): ?>
 			<h2>List of available <?php echo $type ?> :</h2>
 			<table class="table table-striped table-hover ">
 				<thead>
@@ -50,10 +50,10 @@ require_once 'views/header.php';
                         <td><?php echo $f["size"]; ?></td>
                         <td><a href="./list.php?delete=<?php echo $i; ?>&type=<?php echo $t; ?>" class="btn btn-danger btn-sm">Delete</a></td>
                         <td>
-                            <div class="flowplayer">
-                                <video>
-                                    <source type="video/mp4" src="<?php echo $config['outputFolder'].'/'.$f['name']; ?>">
-                                </video>
+                            <div>
+                                <<?= ${type} ?>controls width="320" height="240" >
+                                    <source type="<?=${mime} ?>" src="<?php echo $config['outputFolder'].'/'.$f['name']; ?>">
+                                <\/<?= ${type} ?>>
                             </div>
                         </td>
                     </tr>
@@ -63,15 +63,13 @@ require_once 'views/header.php';
 			</table>
 			<br/>
 			<br/>
-		<?php 
-        } else {
-                if (isset($t) && ($t === 'v' || $t === 'm')) {
-                    echo "<br><div class=\"alert alert-warning\" role=\"alert\">No $type !</div>";
-                } else {
-                    echo "<br><div class=\"alert alert-warning\" role=\"alert\">No such type !</div>";
-                }
-            }
-        ?>
+        <?php else: ?> 
+            <?php if (isset($t) && ($t === 'v' || $t === 'm')): ?>
+                <br><div class="alert alert-warning" role="alert">No <?= $type;  ?> !</div>
+            <?php else: ?>
+                <br><div class="alert alert-warning" role="alert">No such type !</div>
+            <?php endif; ?>
 			<br/>
+        <?php endif; ?>
 		</div><!-- End container -->
 <?php require 'views/footer.php'; ?>

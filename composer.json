@@ -1,0 +1,17 @@
+{
+    "name": "pixibixi/youtube",
+    "authors": [
+        {
+            "name": "PixiBixi",
+            "email": "PixiBixi@users.noreply.github.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "files": [
+            "class/Session.php",
+            "class/FileHandler.php",
+            "class/Downloader.php"
+        ]
+    }
+}

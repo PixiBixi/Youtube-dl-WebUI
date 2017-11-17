@@ -1,5 +1,4 @@
 <?php
-include_once 'FileHandler.php';
 
 class Downloader
 {
@@ -41,8 +40,7 @@ class Downloader
     public function __construct(string $post, bool $audio_only)
     {
         $this->config = require dirname(__DIR__) . '/config/config.php';
-
-        $this->download_path = (new FileHandler())->get_downloads_folder();
+        $this->download_path = $this->get_downloads_folder();
 
         $this->audio_only = $audio_only;
         $this->urls       = explode(",", $post);
@@ -77,6 +75,16 @@ class Downloader
             return;
         }
     }
+
+    private function get_downloads_folder()
+    {
+        $path = $this->config["outputFolder"];
+        if (strpos($path, "/") !== 0) {
+            $path = dirname(__dir__) . '/' . $path;
+        }
+        return (string)$path;
+    }
+
 
     /**
      * Liste tous les backgrounds jobs
@@ -210,7 +218,7 @@ class Downloader
     private function check_outuput_folder()
     {
         if (!is_dir($this->download_path)) {
-            if (!mkdir($this->download_path, 0775)) {
+            if (!mkdir($this->download_path, 0755)) {
                 $this->errors[] = "Output folder doesn't exist and creation failed !";
             }
         } else {
@@ -227,6 +235,7 @@ class Downloader
     private function do_download()
     {
         $cmd = "youtube-dl";
+        $cmd .= " -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio/bestaudio'";
         $cmd .= " -o " . $this->download_path . "/";
         $cmd .= escapeshellarg("%(title)s-%(uploader)s.%(ext)s");
 
