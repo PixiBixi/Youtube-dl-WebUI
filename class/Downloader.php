@@ -35,10 +35,10 @@ class Downloader
 
     /**
      * Constructeur de la classe Downloader
-     * @param array   $post       Array contenant les fichiers à DL
+     * @param string  $post       Array contenant les fichiers à DL
      * @param boolean $audio_only Download only audio
      */
-    public function __construct($post, $audio_only)
+    public function __construct(string $post, bool $audio_only)
     {
         $this->config = require dirname(__DIR__) . '/config/config.php';
 
@@ -84,7 +84,7 @@ class Downloader
      */
     public static function background_jobs()
     {
-        return shell_exec("ps aux | grep -v grep | grep -v \"youtube-dl -U\" | grep youtube-dl | wc -l");
+        return (int)shell_exec("ps aux | grep -v grep | grep -v \"youtube-dl -U\" | grep youtube-dl | wc -l");
     }
 
     /**
@@ -94,7 +94,7 @@ class Downloader
     public static function max_background_jobs()
     {
         $config = require dirname(__DIR__) . '/config/config.php';
-        return $config["max_dl"];
+        return (int)$config["max_dl"];
     }
 
     /**
@@ -118,7 +118,7 @@ class Downloader
                 );
             }
 
-            return $bjs;
+            return (array)$bjs;
         } else {
             return null;
         }
@@ -153,7 +153,7 @@ class Downloader
      * @param  boolean $audio_only Boolean afin de savoir si l'on doit avoir un extracteur installé
      * @return boolean             Boolean pour voir s'il y a des erreurs ou pas
      */
-    private function check_requirements($audio_only)
+    private function check_requirements(bool $audio_only)
     {
         if ($this->is_youtubedl_installed() != 0) {
             $this->errors[] = "Youtube-dl is not installed, see <a href=\"https://rg3.github.io/youtube-dl/download.html\">here</a> !";
@@ -177,26 +177,20 @@ class Downloader
 
     /**
      * Permet de savoir si youtube-dl est dans la variable $PATH
-     * @return boolean YoutubeDL installé ou pas
+     * @return integer YoutubeDL installé ou pas
      */
     private function is_youtubedl_installed()
     {
-        exec("which youtube-dl", $out, $r);
-        if(empty($out)) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return (int)exec("which youtube-dl", $out, $r);
     }
 
     /**
      * Permet de savoir si l'extracteur configuré est installé
-     * @return boolean Si l'extrateur est installé ou pas
+     * @return integer Si l'extrateur est installé ou pas
      */
     private function is_extracter_installed()
     {
-        exec("which " . $this->config["extracter"], $out, $r);
-        return $r;
+        return (int)exec("which " . $this->config["extracter"], $out, $r);
     }
 
     /**
@@ -204,9 +198,9 @@ class Downloader
      * @param  string  $url URL
      * @return boolean      URL valide ou pas
      */
-    private function is_valid_url($url)
+    private function is_valid_url(string $url)
     {
-        return filter_var(trim($url), FILTER_VALIDATE_URL);
+        return (bool)filter_var(trim($url), FILTER_VALIDATE_URL);
     }
 
     /**

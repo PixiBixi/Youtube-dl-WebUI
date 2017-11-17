@@ -33,7 +33,7 @@ class FileHandler
             $videos[] = $video;
         }
 
-        return $videos;
+        return (array)$videos;
     }
 
     /**
@@ -58,7 +58,7 @@ class FileHandler
             $musics[] = $music;
         }
 
-        return $musics;
+        return (array)$musics;
     }
 
     /**
@@ -67,7 +67,7 @@ class FileHandler
      * @param  string $type Catégorie du fichier à supprimer
      * @return void       
      */
-    public function delete($id, $type)
+    public function delete(int $id, string $type)
     {
         $folder = $this->get_downloads_folder() . '/';
         $i      = 0;
@@ -113,7 +113,7 @@ class FileHandler
     {
         $sz     = 'BKMGTP';
         $factor = floor((strlen($bytes) - 1) / 3);
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+        return (string)sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
     }
 
     /**
@@ -123,7 +123,7 @@ class FileHandler
      */
     public function free_space()
     {
-        return $this->to_human_filesize(disk_free_space($this->get_downloads_folder()));
+        return (string)$this->to_human_filesize(disk_free_space($this->get_downloads_folder()));
     }
 
     /**
@@ -136,6 +136,6 @@ class FileHandler
         if (strpos($path, "/") !== 0) {
             $path = dirname(__DIR__) . '/' . $path;
         }
-        return $path;
+        return (string)$path;
     }
 }

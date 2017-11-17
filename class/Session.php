@@ -10,7 +10,7 @@ class Session
 
     /**
      * Instance de Session
-     * @var [type]
+     * @var Session
      */
     private static $_instance;
 
@@ -50,15 +50,14 @@ class Session
      * @param  string $password Password
      * @return boolean          Connecté ou pas
      */
-    public function login($password)
+    public function login(string $password)
     {
         if ($this->config["password"] === hash("sha256",$password)) {
             $_SESSION["logged_in"] = true;
-            return true;
         } else {
             $_SESSION["logged_in"] = false;
-            return false;
         }
+        return (bool)$_SESSION["logged_in"];
     }
 
     /**
@@ -67,7 +66,7 @@ class Session
      */
     public function is_logged_in()
     {
-        return $_SESSION["logged_in"];
+        return (bool)$_SESSION["logged_in"];
     }
 
     /**
