@@ -11,11 +11,11 @@ It supports simultaneous downloads in background.
 ### You can now extract the audio of a video and download multiple videos at the same time !
 
 ## Requirements
-[-] A web server (Apache or nginx)
-[-] PHP latest version should be fine. (At least 5.4)
-[-] Python 2.7 for Youtube[-]dl
-[-] [Youtube[-]dl](https://github.com/rg3/youtube[-]dl)
-[-] avconv or other is required for audio extraction (from youtube[-]dl doc) :
+- A web server (Apache or nginx)
+- PHP latest version should be fine. (At least 5.4)
+- Python 2.7 for Youtube-dl
+- [Youtube-dl](https://github.com/rg3/youtube-dl)
+- avconv or other is required for audio extraction (from youtube-dl doc) :
 `-x, --extract-audio convert video files to audio-only files (requires ffmpeg or avconv and ffprobe or avprobe)`
 
 ## How to install ?
